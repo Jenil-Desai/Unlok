@@ -17,7 +17,19 @@ contract Lock is Ownable {
         return true;
     }
 
-    function withdraw(IERC20 _tokenaddress, uint _amount) public {}
+    function withdraw(
+        IERC20 _tokenaddress,
+        uint _amount
+    ) public returns (bool) {
+        require(_amount > 0, "Amount must be greater than zero");
+        require(
+            lockedBalances[msg.sender][_tokenaddress] >= _amount,
+            "Insufficient balance"
+        );
+        lockedBalances[msg.sender][_tokenaddress] -= _amount;
+        require(_tokenaddress.transfer(msg.sender, _amount), "Transfer failed");
+        return true;
+    }
 
     function balance(IERC20 _tokenaddress) public view returns (uint256) {
         return lockedBalances[msg.sender][_tokenaddress];

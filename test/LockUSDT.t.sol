@@ -20,7 +20,13 @@ contract LockUSDTTest is Test {
 
         usdt.approve(address(lock), 500);
         lock.deposit(usdt, 500);
-
         assertEq(lock.balance(usdt), 500);
+
+        lock.withdraw(usdt, 300);
+        assertEq(
+            usdt.balanceOf(0x015a239874606A99Edb2dcAB3025fBCd286731b4),
+            300
+        );
+        assertEq(usdt.balanceOf(address(lock)), 200);
     }
 }
