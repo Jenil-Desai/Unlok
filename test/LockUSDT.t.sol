@@ -21,6 +21,6 @@ contract LockUSDTTest is Test {
         usdt.approve(address(lock), 500);
         lock.deposit(usdt, 500);
 
-        assertEq(lock.balance(), 500);
+        assertEq(lock.balance(usdt), 500);
     }
 }

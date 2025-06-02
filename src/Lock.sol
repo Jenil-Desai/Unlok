@@ -5,12 +5,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Lock is Ownable {
-    struct LockInfo {
-        uint256 amount;
-        address tokenAddress;
-    }
-
-    mapping(address => LockInfo) private lockedBalances;
+    mapping(address => mapping(IERC20 => uint)) private lockedBalances;
 
     constructor() Ownable(msg.sender) {}
 
@@ -18,14 +13,13 @@ contract Lock is Ownable {
         require(_amount > 0, "Amount must be greater than zero");
         require(_tokenaddress.allowance(msg.sender, address(this)) >= _amount);
         require(_tokenaddress.transferFrom(msg.sender, address(this), _amount));
-        lockedBalances[msg.sender].amount += _amount;
-        lockedBalances[msg.sender].tokenAddress = address(_tokenaddress);
+        lockedBalances[msg.sender][_tokenaddress] += _amount;
         return true;
     }
 
-    function withdraw() public {}
+    function withdraw(IERC20 _tokenaddress, uint _amount) public {}
 
-    function balance() public view returns (uint256) {
-        return lockedBalances[msg.sender].amount;
+    function balance(IERC20 _tokenaddress) public view returns (uint256) {
+        return lockedBalances[msg.sender][_tokenaddress];
     }
 }
