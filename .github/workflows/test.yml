@@ -24,6 +24,14 @@ jobs:
         run: |
           forge --version
 
+      - name: Install bun
+        uses: oven-sh/bun-install@v1
+
+      - name: Install dependencies
+        run: |
+          bun install
+        id: install
+
       - name: Run Forge fmt
         run: |
           forge fmt --check
