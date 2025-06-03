@@ -25,7 +25,7 @@ jobs:
           forge --version
 
       - name: Install bun
-        uses: oven-sh/bun-install@v1
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
         run: |
